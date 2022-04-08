@@ -88,8 +88,17 @@ const controller = {
 				product.name = name,
 				product.price = +price,
 				product.discount = discount,
-				product.description = description,
-				product.image = req.file ? req.file.filaname : product.image
+				product.description = description
+				if(req.file){
+					if(fs.existsSync("./public/images/products/", product.image)){
+						fs.unlinkSync(`./public/images/products/${product.image}`)
+					}else{
+						console.log('No encontre el archivo')
+					}
+					product.image = req.file.filename
+				}else{
+					product.image = product.image
+				}
 			}
 		})
 
@@ -105,12 +114,18 @@ const controller = {
 
 		products.forEach(product => {
 			if(product.id === productId){
-				
+				if(fs.existsSync("./public/images/products/", product.image)){
+					fs.unlinkSync(`./public/images/products/${product.image}`)
+				}else{
+					console.log('No encontre el archivo')
+				}
 
 				let productToDestroyIndex = products.indexOf(product)
-				productToDestroyIndex !== -1 ? 
-				products.splice(productToDestroyIndex, 1) : 
-				console.log('No encontre el producto')
+				if(productToDestroyIndex !== -1 ){
+					products.splice(productToDestroyIndex, 1) 
+				}else{
+					console.log('No encontre el producto')
+			}
 			}
 		})
 		writeJson(products)

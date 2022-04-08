@@ -1,7 +1,7 @@
 // ************ Require's ************
 const express = require('express');
 const router = express.Router();
-const upload = require('../middlewares//uploadFiles')
+const upload = require('../middlewares/uploadProductFiles')
 
 // ************ Controller Require ************
 const productsController = require('../controllers/productsController');
