@@ -6,7 +6,6 @@ const productsFilePath = path.join(__dirname, '../data/productsDataBase.json');
 const products = JSON.parse(fs.readFileSync(productsFilePath, 'utf-8'));
 const writeJson = dataBase => fs.writeFileSync(productsFilePath, JSON.stringify(dataBase), 'utf-8')
 
-
 const toThousand = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 const controller = {
@@ -36,8 +35,7 @@ const controller = {
 	
 	// Create -  Method to store
 	store: (req, res) => {
-		const {name, price, discount, category, description} =  req.body
-
+		res.send =  req.file
 		let lastId = 1;
 
 		products.forEach(product => {
@@ -58,7 +56,7 @@ const controller = {
 			let newProduct = {
 				...req.body,
 				id: lastId + 1,
-				image: "default-image.png"
+				image: req.file ? req.file.filename : "default-image.png"
 			}
 
 			products.push(newProduct)
@@ -91,7 +89,7 @@ const controller = {
 				product.price = +price,
 				product.discount = discount,
 				product.description = description,
-				product.image = product.image
+				product.image = req.file ? req.file.filaname : product.image
 			}
 		})
 
@@ -107,6 +105,8 @@ const controller = {
 
 		products.forEach(product => {
 			if(product.id === productId){
+				
+
 				let productToDestroyIndex = products.indexOf(product)
 				productToDestroyIndex !== -1 ? 
 				products.splice(productToDestroyIndex, 1) : 
